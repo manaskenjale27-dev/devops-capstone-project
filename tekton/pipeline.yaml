@@ -14,8 +14,8 @@ spec:
       default: main
     - name: image
       type: string
-      description: Image name/tag to build
-      default: accounts:latest
+      description: Full image registry path used for build and deployment
+      default: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/accounts:latest
   tasks:
     - name: cleanup
       taskRef:
@@ -42,7 +42,37 @@ spec:
       runAfter:
         - clone
       taskRef:
-        name: echo
+        name: test-and-lint
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+    - name: build
+      runAfter:
+        - test-and-lint
+      taskRef:
+        name: buildah
       params:
-        - name: message
-          value: "Source cloned. Configure lab-provided lint/test ClusterTasks before enabling deployment."
+        - name: IMAGE
+          value: $(params.image)
+        - name: DOCKERFILE
+          value: ./Dockerfile
+        - name: TLSVERIFY
+          value: "false"
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+    - name: deploy
+      runAfter:
+        - build
+      taskRef:
+        name: openshift-client
+      params:
+        - name: SCRIPT
+          value: |
+            set -eu
+            oc apply -f deploy/deployment.yaml
+            oc set image deployment/accounts accounts=$(params.image)
+            oc rollout status deployment/accounts --timeout=180s
+      workspaces:
+        - name: manifest-dir
+          workspace: pipeline-workspace
