@@ -151,6 +151,38 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
         self.assertEqual(response.get_json()["error"], "Method not Allowed")
 
+    def test_configuration_builds_database_uri_from_environment(self):
+        """It should construct DATABASE_URI from its component variables."""
+        import importlib
+        from service import config
+
+        names = [
+            "DATABASE_URI",
+            "DATABASE_USER",
+            "DATABASE_PASSWORD",
+            "DATABASE_NAME",
+            "DATABASE_HOST",
+        ]
+        original = {name: os.environ.get(name) for name in names}
+        try:
+            os.environ.pop("DATABASE_URI", None)
+            os.environ["DATABASE_USER"] = "test_user"
+            os.environ["DATABASE_PASSWORD"] = "test_password"
+            os.environ["DATABASE_NAME"] = "test_db"
+            os.environ["DATABASE_HOST"] = "db.example.test"
+            importlib.reload(config)
+            self.assertEqual(
+                config.DATABASE_URI,
+                "postgresql://test_user:test_password@db.example.test:5432/test_db",
+            )
+        finally:
+            for name, value in original.items():
+                if value is None:
+                    os.environ.pop(name, None)
+                else:
+                    os.environ[name] = value
+            importlib.reload(config)
+
     def test_list_accounts(self):
         """It should list accounts."""
         self._create_accounts(2)
