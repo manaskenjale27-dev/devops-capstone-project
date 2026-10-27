@@ -1,0 +1,18 @@
+GitHub Actions CI Build
+Run: https://github.com/manaskenjale27-dev/devops-capstone-project/actions/runs/40503070374
+
+Observed result:
+Set up job: Success
+Initialize containers: Success
+Checkout code: Success
+Install dependencies: Success
+Lint with flake8: Success
+Run unit tests with nose: Success
+Post Checkout code: Success
+Stop containers: Success
+Complete job: Success
+
+Test summary: Ran 17 tests in 0.667s — OK
+Coverage summary: TOTAL 253 statements, 44 missed, 83% coverage.
+
+Note: This is the GitHub Actions CI run. It is not the OpenShift Tekton PipelineRun log.
