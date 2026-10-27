@@ -15,7 +15,6 @@ spec:
     - name: image
       type: string
       description: Full image registry path used for build and deployment
-      default: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/accounts:latest
   tasks:
     - name: cleanup
       taskRef:
