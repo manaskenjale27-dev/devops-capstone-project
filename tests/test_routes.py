@@ -123,6 +123,28 @@ class TestAccountService(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
+    def test_cors_headers(self):
+        """It should include CORS response headers."""
+        response = self.client.get(
+            "/", headers={"Origin": "https://example.com"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(response.headers.get("Access-Control-Allow-Origin"))
+
+    def test_security_headers(self):
+        """It should include standard security response headers."""
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.headers.get("X-Content-Type-Options"), "nosniff")
+        self.assertEqual(response.headers.get("X-Frame-Options"), "SAMEORIGIN")
+        self.assertIsNotNone(response.headers.get("Referrer-Policy"))
+
+    def test_method_not_allowed_handler(self):
+        """It should return JSON for an unsupported HTTP method."""
+        response = self.client.patch("/")
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(response.get_json()["error"], "Method not Allowed")
+
     def test_list_accounts(self):
         """It should list accounts."""
         self._create_accounts(2)
