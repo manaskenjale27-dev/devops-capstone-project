@@ -1,5 +1,5 @@
 GitHub Actions run:
-https://github.com/manaskenjale27-dev/devops-capstone-project/actions/runs/40503070374
+https://github.com/manaskenjale27-dev/devops-capstone-project/actions/runs/40503425437
 
 Set up job — Success
 Initialize containers — Success
@@ -11,7 +11,7 @@ Post Checkout code — Success
 Stop containers — Success
 Complete job — Success
 
-Test summary: Ran 17 tests in 0.667s — OK
-Coverage summary: 253 statements, 44 missed, 83% total coverage.
+Test summary: Ran 17 tests in 0.631s — OK
+Coverage: TOTAL 253 statements, 44 missed, 83%.
 
-This output is from the actual GitHub Actions run, not a Tekton PipelineRun.
+This is GitHub Actions CI output, not the required Tekton PipelineRun log.
