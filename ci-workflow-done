@@ -1,0 +1,17 @@
+GitHub Actions run:
+https://github.com/manaskenjale27-dev/devops-capstone-project/actions/runs/40503070374
+
+Set up job — Success
+Initialize containers — Success
+Checkout code — Success
+Install dependencies — Success
+Lint with flake8 — Success
+Run unit tests with nose — Success
+Post Checkout code — Success
+Stop containers — Success
+Complete job — Success
+
+Test summary: Ran 17 tests in 0.667s — OK
+Coverage summary: 253 statements, 44 missed, 83% total coverage.
+
+This output is from the actual GitHub Actions run, not a Tekton PipelineRun.
