@@ -24,14 +24,20 @@ spec:
             - name: DATABASE_HOST
               value: postgresql
             - name: DATABASE_USER
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-user
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgresql
                   key: database-password
             - name: DATABASE_NAME
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-name
 ---
 apiVersion: v1
 kind: Service
@@ -47,3 +53,19 @@ spec:
       port: 8080
       targetPort: 8080
   type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: accounts
+  labels:
+    app: accounts
+spec:
+  to:
+    kind: Service
+    name: accounts
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
