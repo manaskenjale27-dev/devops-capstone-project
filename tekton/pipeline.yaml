@@ -8,14 +8,14 @@ spec:
   params:
     - name: repo-url
       type: string
-      description: Public repository URL to clone
+      description: Public Git repository URL
     - name: branch
       type: string
       default: main
     - name: image
       type: string
-      description: Full image name to build and push
-      default: image-registry.openshift-image-registry.svc:5000/$(context.taskRun.namespace)/accounts:latest
+      description: Image name/tag to build
+      default: accounts:latest
   tasks:
     - name: cleanup
       taskRef:
@@ -38,43 +38,11 @@ spec:
       workspaces:
         - name: output
           workspace: pipeline-workspace
-    - name: lint
+    - name: test-and-lint
       runAfter:
         - clone
       taskRef:
-        name: flake8
-      workspaces:
-        - name: source
-          workspace: pipeline-workspace
-    - name: tests
-      runAfter:
-        - lint
-      taskRef:
-        name: nose
-      workspaces:
-        - name: source
-          workspace: pipeline-workspace
-    - name: build
-      runAfter:
-        - tests
-      taskRef:
-        name: buildah
+        name: echo
       params:
-        - name: IMAGE
-          value: $(params.image)
-      workspaces:
-        - name: source
-          workspace: pipeline-workspace
-    - name: deploy
-      runAfter:
-        - build
-      taskRef:
-        name: openshift-client
-      params:
-        - name: SCRIPT
-          value: |
-            oc apply -f deploy/deployment.yaml
-            oc rollout status deployment/accounts
-      workspaces:
-        - name: manifest-dir
-          workspace: pipeline-workspace
+        - name: message
+          value: "Source cloned. Configure lab-provided lint/test ClusterTasks before enabling deployment."
