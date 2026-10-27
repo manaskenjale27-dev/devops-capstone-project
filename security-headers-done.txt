@@ -1,0 +1,10 @@
+Account service CI test summary from GitHub Actions run:
+https://github.com/manaskenjale27-dev/devops-capstone-project/actions/runs/40503070374
+
+Ran 17 tests in 0.667s
+OK
+
+Coverage:
+TOTAL 253 statements, 44 missed, 83% coverage.
+
+This run verifies the repository's current CI test suite. Run the security/CORS-focused tests in the course lab before treating this as the exact required security-headers-done output.
