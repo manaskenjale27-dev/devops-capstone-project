@@ -139,6 +139,11 @@ class TestAccountService(TestCase):
         self.assertEqual(response.headers.get("X-Frame-Options"), "SAMEORIGIN")
         self.assertIsNotNone(response.headers.get("Referrer-Policy"))
 
+    def test_server_error_handler(self):
+        """It should return JSON when an unexpected server error occurs."""
+        response = self.client.get("/__test_missing_route_for_500__")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_method_not_allowed_handler(self):
         """It should return JSON for an unsupported HTTP method."""
         response = self.client.patch("/")
