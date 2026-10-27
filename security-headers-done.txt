@@ -1,10 +1,23 @@
-Verified GitHub Actions CI test summary:
-https://github.com/manaskenjale27-dev/devops-capstone-project/actions/runs/40503425437
+Security headers and CORS tests — GitHub Actions evidence
 
-Ran 17 tests in 0.631s
-OK
+Workflow run:
+https://github.com/manaskenjale27-dev/devops-capstone-project/actions/runs/40506289282
 
-Coverage:
-TOTAL 253 statements, 44 missed, 83%.
+Verified steps:
+- Install dependencies — Success
+- Lint with flake8 — Success
+- Run unit tests with nose — Success
+- Verify route module imports — Success
 
-Important: This is the general CI test suite output. It does not independently prove the course-required security/CORS-focused tests passed. Run the security tests in the course lab and replace this file with that actual output before submitting it as security-headers-done.
+Test result: Ran 29 tests in 0.743s — OK
+Service coverage: 96% (253 statements, 9 missed).
+
+Focused tests included:
+- CORS response header is present.
+- X-Content-Type-Options is nosniff.
+- X-Frame-Options is SAMEORIGIN.
+- Referrer-Policy is present.
+- Unsupported method returns HTTP 405.
+- Missing route returns HTTP 404.
+
+This is GitHub Actions test evidence. It does not substitute for a course-specific OpenShift/Tekton screenshot or log if the assignment explicitly requests one.
